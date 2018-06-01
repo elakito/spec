@@ -451,6 +451,26 @@ func TestCircularSpecExpansion(t *testing.T) {
 	}, "Calling expand spec with circular refs, should not panic!")
 }
 
+func TestCircularSpec2Expansion(t *testing.T) {
+	doc, err := jsonDoc("fixtures/expansion/circularSpec2.json")
+	assert.NoError(t, err)
+
+	specPath, _ := absPath("fixtures/expansion/circularSpec2.json")
+
+	opts := &ExpandOptions{
+		RelativeBase: specPath,
+	}
+
+	spec := new(Swagger)
+	err = json.Unmarshal(doc, spec)
+	assert.NoError(t, err)
+
+	assert.NotPanics(t, func() {
+		err = ExpandSpec(spec, opts)
+		assert.NoError(t, err)
+	}, "Calling expand spec with circular refs, should not panic!")
+}
+
 func TestItemsExpansion(t *testing.T) {
 	carsDoc, err := jsonDoc("fixtures/expansion/schemas2.json")
 	assert.NoError(t, err)
